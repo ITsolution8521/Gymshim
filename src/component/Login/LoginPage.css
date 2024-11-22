@@ -41,13 +41,17 @@
     width:20vw;
 }
 
-.login-input .username-input{
+.login-input input{
     margin-left: 3px;
 }
 
 .login-container .logo{
     display: flex;
     justify-content: center;
+}
+
+.login-button{
+    margin-top: 15px;
 }
 
 .login-button button{

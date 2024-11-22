@@ -1,8 +1,39 @@
 import React from 'react'
 import logo from '../../assets/image.png'
 import './LoginPage.css'
+import {Link} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { login } from '../../actions/userAction'
 
 function LoginPage() {
+
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { isAuthenticated } = useSelector((state) => state.user);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    
+    dispatch(login(email, password));
+    
+    setEmail('');
+    setPassword('');
+    }
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
+
     return (
         <div className='login-container'>
             <div className="logo">
@@ -12,36 +43,37 @@ function LoginPage() {
                 <div className="login-form-header">
                 <h3>LOGIN FORM</h3>
                 </div>
-                <div className="login-input">
-                    <div className="username">
-                        <div className="username-icon">
-                            <box-icon type='solid' name='user'></box-icon>
+                <form onSubmit={handleSubmit}>
+                    <div className="login-input">
+                        <div className="username">
+                            <div className="username-icon">
+                                <box-icon type='solid' name='user'></box-icon>
+                            </div>
+                            <div className="username-input">
+                                <input type="text" name="email" id="username"  value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </div>
                         </div>
-                        <div className="username-input">
-                            <input type="text" name="username" id="username" />
+                        <div className="password">
+                            <div className="password-icon">
+                                <box-icon type='solid' name='lock'></box-icon>
+                            </div>
+                            <div className="password-input">
+                                <input type="password" name="password" id="password"  value={password}  onChange={(e) => setPassword(e.target.value)}/>
+                            </div>
                         </div>
                     </div>
-                    <div className="password">
-                        <div className="password-icon">
-                            <box-icon type='solid' name='lock'></box-icon>
-                        </div>
-                        <div className="password-input">
-                            <input type="password" name="password" id="password" />
-                        </div>
+                    <div className="remember">
+                        <input type="checkbox" name="check" id="check" />
+                        <h5>Remember me</h5>
                     </div>
-                </div>
-                <div className="remember">
-                    <input type="checkbox" name="check" id="check" />
-                    <h5>Remember me</h5>
-                </div>
-                <div className="forgot">
-                    <p>forgot password</p>
-                </div>
-                <div className="login-button">
-                    <button>LOG IN</button>
-                </div>
-
-
+                    <div className="forgot">
+                        <p>forgot password</p>
+                    </div>
+                    <div className="login-button">
+                        <button>LOG IN</button>
+                    </div>
+                </form>
+             
             </div>
         </div>
     )
